@@ -40,16 +40,22 @@ interface TItem {
 type TSortableCardsProps = {
 	item: TItem;
 	enabled: boolean;
+	actions: {
+		items: TItem[];
+		setItems: React.Dispatch<React.SetStateAction<TItem[]>>;
+		newItem: TItem;
+		setNewItem: React.Dispatch<React.SetStateAction<TItem>>;
+		setActiveCard: React.Dispatch<React.SetStateAction<TItem | undefined>>;
+	};
 } & HTMLAttributes<HTMLDivElement>;
 
-const SortableCtaList = () => {
+export const SortableCtaList = () => {
 	// init sdk
 	const sdk = useSDK<FieldAppSDK>();
 
-	// init state items
+	// init state for items, newItem, activeCard
 	const [items, setItems] = useState<TItem[]>(sdk.field.getValue().ctas || []);
-	// init state newItems
-	const [newItems, setNewItems] = useState({
+	const [newItem, setNewItem] = useState<TItem>({
 		id: new Date().getTime(),
 		label: "",
 		url: "",
@@ -57,9 +63,7 @@ const SortableCtaList = () => {
 	});
 	const [activeCard, setActiveCard] = useState<TItem>();
 
-	const inputLabelRef = useRef<HTMLInputElement>(null);
-	const inputUrlRef = useRef<HTMLInputElement>(null);
-
+	// DnD handler
 	const handleDragEnd = (event: DragEndEvent) => {
 		const { active, over } = event;
 		if (!over) return;
@@ -82,11 +86,98 @@ const SortableCtaList = () => {
 		}
 	};
 
+	// Create new item
 	const createItem = () => {
-		const created = [...items, newItems];
+		const created = [...items, newItem];
 
-		setActiveCard(newItems);
+		setActiveCard(newItem);
 		setItems(created);
+	};
+
+	return (
+		<>
+			<Box marginBottom="spacingL">
+				<Flex
+					flexDirection="row"
+					justifyContent="between"
+					alignItems="end"
+					gap="spacingS"
+				>
+					{" "}
+					<Button
+						variant="secondary"
+						aria-label="Add Item"
+						startIcon={<PlusIcon />}
+						onClick={() => createItem()}
+					>
+						Add
+					</Button>
+				</Flex>
+			</Box>
+			<DndContext onDragEnd={handleDragEnd}>
+				<SortableContext items={items} strategy={verticalListSortingStrategy}>
+					<Flex flexDirection="column" gap="spacingS">
+						{items.map((item) => {
+							const enabled = !activeCard ? true : activeCard?.id === item.id;
+
+							return (
+								<CtaListItem
+									key={item.id}
+									item={item}
+									enabled={enabled}
+									actions={{
+										items,
+										setItems,
+										newItem,
+										setNewItem,
+										setActiveCard,
+									}}
+								/>
+							);
+						})}
+					</Flex>
+				</SortableContext>
+			</DndContext>
+		</>
+	);
+};
+
+function CtaListItem({ item, enabled, actions }: TSortableCardsProps) {
+	// init sdk
+	const sdk = useSDK<FieldAppSDK>();
+
+	// init state for input
+	const [inputState, setInputState] = useState({
+		label: item.label,
+		url: item.url,
+	});
+
+	const inputLabelRef = useRef<HTMLInputElement>(null);
+	const inputUrlRef = useRef<HTMLInputElement>(null);
+
+	//desctructure props
+	const { id } = item;
+	const { items, setItems, setNewItem, setActiveCard } = actions;
+
+	const styles = {
+		card: css({
+			// This lets us change z-index when dragging
+			position: "relative",
+		}),
+		dragHandle: css({
+			alignSelf: "stretch",
+		}),
+	};
+
+	const { attributes, listeners, setNodeRef, transform, transition, active } =
+		useSortable({
+			id,
+		});
+	const zIndex = active && active.id === id ? 1 : 0;
+	const style = {
+		transform: CSS.Translate.toString(transform),
+		transition,
+		zIndex,
 	};
 
 	const editItem = (i: TItem) => {
@@ -118,7 +209,7 @@ const SortableCtaList = () => {
 		setItems(updated);
 
 		sdk.field.setValue({ ctas: updated });
-		setNewItems({ id: new Date().getTime(), label: "", url: "", edit: true });
+		setNewItem({ id: new Date().getTime(), label: "", url: "", edit: true });
 		setActiveCard(undefined);
 	};
 
@@ -126,173 +217,108 @@ const SortableCtaList = () => {
 		const deleted = items.filter((item: TItem) => item.id !== i.id);
 		setItems(deleted);
 		sdk.field.setValue({ ctas: deleted });
+		setActiveCard(undefined);
 	};
 
-	function SortableCard({ item, enabled }: TSortableCardsProps) {
-		const [inputState, setInputState] = useState({
-			label: item.label,
-			url: item.url,
-		});
-		const { id } = item;
-		const styles = {
-			card: css({
-				// This lets us change z-index when dragging
-				position: "relative",
-			}),
-			dragHandle: css({
-				alignSelf: "stretch",
-			}),
-		};
-
-		const { attributes, listeners, setNodeRef, transform, transition, active } =
-			useSortable({
-				id,
-			});
-		const zIndex = active && active.id === id ? 1 : 0;
-		const style = {
-			transform: CSS.Translate.toString(transform),
-			transition,
-			zIndex,
-		};
-
-		return (
-			<Card
-				className={styles.card}
-				dragHandleRender={() => (
-					<DragHandle
-						as="button"
-						className={styles.dragHandle}
-						label="Move card"
-						{...attributes}
-						{...listeners}
-					/>
-				)}
-				padding="none"
-				withDragHandle
-				ref={setNodeRef}
-				style={style}
-			>
-				<Box padding="spacingS">
-					<Flex
-						flexDirection="row"
-						justifyContent="between"
-						alignItems="end"
-						gap="spacingS"
-					>
-						<Flex flexDirection="column" flexGrow={1}>
-							<Text
-								fontColor="blue800"
-								fontWeight="fontWeightMedium"
-								marginBottom="spacingXs"
-							>
-								Label
-							</Text>
-							{!item.edit ? (
-								<Text>{item.label}</Text>
-							) : (
-								<TextInput
-									name="label"
-									ref={inputLabelRef}
-									onKeyDown={function noRefCheck() {}}
-									placeholder={item.label}
-									size="medium"
-									onChange={(e) => {
-										setInputState({ ...inputState, label: e.target.value });
-									}}
-									value={inputState.label}
-								/>
-							)}
-						</Flex>
-						<Flex flexDirection="column" flexGrow={1}>
-							<Text
-								fontColor="blue800"
-								fontWeight="fontWeightMedium"
-								marginBottom="spacingXs"
-							>
-								Url
-							</Text>
-							{!item.edit ? (
-								<Text>{item.url}</Text>
-							) : (
-								<TextInput
-									name="url"
-									ref={inputUrlRef}
-									onKeyDown={function noRefCheck() {}}
-									placeholder="Enter Url"
-									size="medium"
-									onChange={(e) => {
-										setInputState({ ...inputState, url: e.target.value });
-									}}
-									value={inputState.url}
-								/>
-							)}
-						</Flex>
-						<Flex flexDirection="column" flexGrow={0} alignSelf="center">
-							{!item.edit ? (
-								<IconButton
-									variant="transparent"
-									aria-label="Select the date"
-									icon={<EditIcon />}
-									onClick={() => editItem(item)}
-									isDisabled={!enabled}
-								/>
-							) : (
-								<IconButton
-									variant="transparent"
-									aria-label="Select the date"
-									icon={<DoneIcon />}
-									onClick={() => saveItem(item)}
-								/>
-							)}
-							<IconButton
-								variant="transparent"
-								aria-label="Select the date"
-								icon={<DeleteIcon />}
-								onClick={() => deleteItem(item)}
-								isDisabled={!enabled}
-							/>
-						</Flex>
-					</Flex>
-				</Box>
-			</Card>
-		);
-	}
-
 	return (
-		<>
-			<Box marginBottom="spacingL">
+		<Card
+			className={styles.card}
+			dragHandleRender={() => (
+				<DragHandle
+					as="button"
+					className={styles.dragHandle}
+					label="Move card"
+					{...attributes}
+					{...listeners}
+				/>
+			)}
+			padding="none"
+			withDragHandle
+			ref={setNodeRef}
+			style={style}
+		>
+			<Box padding="spacingS">
 				<Flex
 					flexDirection="row"
 					justifyContent="between"
 					alignItems="end"
 					gap="spacingS"
 				>
-					{" "}
-					<Button
-						variant="secondary"
-						aria-label="Add Item"
-						startIcon={<PlusIcon />}
-						onClick={() => createItem()}
-					>
-						Add
-					</Button>
+					<Flex flexDirection="column" flexGrow={1}>
+						<Text
+							fontColor="blue800"
+							fontWeight="fontWeightMedium"
+							marginBottom="spacingXs"
+						>
+							Label
+						</Text>
+						{!item.edit ? (
+							<Text>{item.label}</Text>
+						) : (
+							<TextInput
+								name="label"
+								ref={inputLabelRef}
+								onKeyDown={function noRefCheck() {}}
+								placeholder="Enter Label"
+								size="medium"
+								onChange={(e) => {
+									setInputState({ ...inputState, label: e.target.value });
+								}}
+								value={inputState.label}
+							/>
+						)}
+					</Flex>
+					<Flex flexDirection="column" flexGrow={1}>
+						<Text
+							fontColor="blue800"
+							fontWeight="fontWeightMedium"
+							marginBottom="spacingXs"
+						>
+							Url
+						</Text>
+						{!item.edit ? (
+							<Text>{item.url}</Text>
+						) : (
+							<TextInput
+								name="url"
+								ref={inputUrlRef}
+								onKeyDown={function noRefCheck() {}}
+								placeholder="Enter Url"
+								size="medium"
+								onChange={(e) => {
+									setInputState({ ...inputState, url: e.target.value });
+								}}
+								value={inputState.url}
+							/>
+						)}
+					</Flex>
+					<Flex flexDirection="column" flexGrow={0} alignSelf="center">
+						{!item.edit ? (
+							<IconButton
+								variant="transparent"
+								aria-label="Select the date"
+								icon={<EditIcon />}
+								onClick={() => editItem(item)}
+								isDisabled={!enabled}
+							/>
+						) : (
+							<IconButton
+								variant="transparent"
+								aria-label="Select the date"
+								icon={<DoneIcon />}
+								onClick={() => saveItem(item)}
+							/>
+						)}
+						<IconButton
+							variant="transparent"
+							aria-label="Select the date"
+							icon={<DeleteIcon />}
+							onClick={() => deleteItem(item)}
+							isDisabled={!enabled}
+						/>
+					</Flex>
 				</Flex>
 			</Box>
-			<DndContext onDragEnd={handleDragEnd}>
-				<SortableContext items={items} strategy={verticalListSortingStrategy}>
-					<Flex flexDirection="column" gap="spacingS">
-						{items.map((item) => {
-							const enabled = !activeCard ? true : activeCard?.id === item.id;
-
-							return (
-								<SortableCard key={item.id} item={item} enabled={enabled} />
-							);
-						})}
-					</Flex>
-				</SortableContext>
-			</DndContext>
-		</>
+		</Card>
 	);
-};
-
-export default SortableCtaList;
+}
