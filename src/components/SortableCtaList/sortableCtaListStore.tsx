@@ -28,9 +28,8 @@ type TCtaListStore = State & Actions;
 
 // business logic: create, edit, update, delete
 const createItem = (items: TItem[], item: TItem, sdk: FieldAppSDK) => {
-	console.log("created");
 	const created = [...items, item];
-	console.log(created);
+	console.log("created: ", created);
 	sdk.field.setValue({ ctas: created });
 	return created;
 };
@@ -39,9 +38,8 @@ const editItem = (items: TItem[], id: number | undefined) => {
 	if (!id) {
 		return undefined;
 	}
-	console.log("edited");
 	const edited = items.filter((item: TItem) => id === item.id);
-	console.log(edited);
+	console.log("edited: ", edited);
 	return edited[0].id;
 };
 
@@ -52,28 +50,26 @@ const updateItem = (
 	url: string,
 	sdk: FieldAppSDK
 ): TItem[] => {
-	console.log("updated");
 	const updated = items.map((item) => ({
 		...item,
 		label: item.id === id ? label : item.label,
 		url: item.id === id ? url : item.url,
 	}));
-	console.log(updated);
+	console.log("updated: ", updated);
 	sdk.field.setValue({ ctas: updated });
 
 	return updated;
 };
 
 const deleteItem = (items: TItem[], id: number, sdk: FieldAppSDK) => {
-	console.log("deleted");
 	const deleted = items.filter((item: TItem) => id !== item.id);
-	console.log(deleted);
+	console.log("deleted: ", deleted);
 	sdk.field.setValue({ ctas: deleted });
 	return deleted;
 };
 
 // Zustand store
-export const useCtaListStore = create<TCtaListStore>((set, get) => ({
+export const useCtaListStore = create<TCtaListStore>((set) => ({
 	sdk: {} as FieldAppSDK,
 	items: [],
 	newItem: {

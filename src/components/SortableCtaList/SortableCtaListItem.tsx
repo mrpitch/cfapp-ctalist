@@ -25,15 +25,16 @@ export const CtaListItem = ({ item }: TSortableCardsProps) => {
 	const { updateItem, deleteItem, editId, editItem } = useCtaListStore(
 		(state) => state
 	);
-	// init state for input
+
+	// init state for input & destructure props
 	const [inputState, setInputState] = useState({
 		label: item.label,
 		url: item.url,
 	});
-
-	//destructure props
 	const { id, label, url } = item;
+	const disabled = !editId ? true : editId === id;
 
+	//styles for DnD & & destructure DnD props
 	const styles = {
 		card: css({
 			// This lets us change z-index when dragging
@@ -43,7 +44,6 @@ export const CtaListItem = ({ item }: TSortableCardsProps) => {
 			alignSelf: "stretch",
 		}),
 	};
-
 	const { attributes, listeners, setNodeRef, transform, transition, active } =
 		useSortable({
 			id,
@@ -54,8 +54,6 @@ export const CtaListItem = ({ item }: TSortableCardsProps) => {
 		transition,
 		zIndex,
 	};
-
-	const disabled = !editId ? true : editId === id;
 
 	return (
 		<Card
