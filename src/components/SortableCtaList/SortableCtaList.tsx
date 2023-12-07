@@ -1,0 +1,87 @@
+import { useEffect } from "react";
+
+import { FieldAppSDK } from "@contentful/app-sdk";
+import { /* useCMA, */ useSDK } from "@contentful/react-apps-toolkit";
+
+import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import {
+	arrayMove,
+	verticalListSortingStrategy,
+	SortableContext,
+} from "@dnd-kit/sortable";
+
+import { TItem, useCtaListStore } from "./sortableCtaListStore";
+
+import { Box, Button, Flex } from "@contentful/f36-components";
+import { PlusIcon } from "@contentful/f36-icons";
+
+import { CtaListItem } from "./SortableCtaListItem";
+
+export const SortableCtaList = () => {
+	const { items, setItems, createItem, setSDK } = useCtaListStore(
+		(state) => state
+	);
+	// init sdk
+	const sdk = useSDK<FieldAppSDK>();
+
+	useEffect(() => {
+		console.log("init", sdk.field.getValue().ctas);
+		setSDK(sdk);
+		setItems(sdk.field.getValue().ctas || []);
+	}, [sdk, sdk.field, setItems, setSDK]);
+
+	// DnD handler
+	const handleDragEnd = (event: DragEndEvent) => {
+		const { active, over } = event;
+		if (!over) return;
+
+		const activeItem = items.find((item) => item.id === active.id);
+		const overItem = items.find((item) => item.id === over.id);
+
+		if (!activeItem || !overItem) {
+			return;
+		}
+
+		const activeIndex = items.findIndex((item) => item.id === active.id);
+		const overIndex = items.findIndex((item) => item.id === over.id);
+
+		if (activeIndex !== overIndex) {
+			const sorted = arrayMove<TItem>(items, activeIndex, overIndex);
+			setItems(sorted);
+
+			sdk.field.setValue({ ctas: sorted });
+		}
+	};
+
+	return (
+		<>
+			<Box marginBottom="spacingL">
+				<Flex
+					flexDirection="row"
+					justifyContent="between"
+					alignItems="end"
+					gap="spacingS"
+				>
+					{" "}
+					<Button
+						variant="secondary"
+						aria-label="Add Item"
+						startIcon={<PlusIcon />}
+						onClick={() => createItem()}
+					>
+						Add
+					</Button>
+				</Flex>
+			</Box>
+			<DndContext onDragEnd={handleDragEnd}>
+				<SortableContext items={items} strategy={verticalListSortingStrategy}>
+					<Flex flexDirection="column" gap="spacingS">
+						{items.map((item) => {
+							return <CtaListItem key={item.id} item={item} />;
+						})}
+					</Flex>
+				</SortableContext>
+			</DndContext>
+		</>
+	);
+};
