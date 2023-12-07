@@ -1,4 +1,4 @@
-import { useState, useRef, HTMLAttributes } from "react";
+import { useState, HTMLAttributes } from "react";
 
 import { css } from "emotion";
 import { useSortable } from "@dnd-kit/sortable";
@@ -30,9 +30,6 @@ export const CtaListItem = ({ item }: TSortableCardsProps) => {
 		label: item.label,
 		url: item.url,
 	});
-
-	const inputLabelRef = useRef<HTMLInputElement>(null);
-	const inputUrlRef = useRef<HTMLInputElement>(null);
 
 	//destructure props
 	const { id } = item;
@@ -95,7 +92,6 @@ export const CtaListItem = ({ item }: TSortableCardsProps) => {
 						{editId === item.id ? (
 							<TextInput
 								name="label"
-								ref={inputLabelRef}
 								onKeyDown={function noRefCheck() {}}
 								placeholder="Enter Label"
 								size="medium"
@@ -119,7 +115,6 @@ export const CtaListItem = ({ item }: TSortableCardsProps) => {
 						{editId === item.id ? (
 							<TextInput
 								name="url"
-								ref={inputUrlRef}
 								onKeyDown={function noRefCheck() {}}
 								placeholder="Enter Url"
 								size="medium"
@@ -141,7 +136,6 @@ export const CtaListItem = ({ item }: TSortableCardsProps) => {
 									icon={<DoneIcon />}
 									onClick={() => {
 										updateItem(item.id, inputState.label, inputState.url);
-										editItem(undefined);
 									}}
 									isDisabled={!disabled}
 								/>

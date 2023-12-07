@@ -10,7 +10,7 @@ import {
 	SortableContext,
 } from "@dnd-kit/sortable";
 
-import { TItem, useCtaListStore } from "./sortableCtaListStore";
+import { useCtaListStore } from "./sortableCtaListStore";
 
 import { Box, Button, Flex } from "@contentful/f36-components";
 import { PlusIcon } from "@contentful/f36-icons";
@@ -46,7 +46,7 @@ export const SortableCtaList = () => {
 		const overIndex = items.findIndex((item) => item.id === over.id);
 
 		if (activeIndex !== overIndex) {
-			const sorted = arrayMove<TItem>(items, activeIndex, overIndex);
+			const sorted = arrayMove(items, activeIndex, overIndex);
 			setItems(sorted);
 
 			sdk.field.setValue({ ctas: sorted });
