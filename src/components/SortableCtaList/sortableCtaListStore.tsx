@@ -94,6 +94,7 @@ export const useCtaListStore = create<TCtaListStore>((set, get) => ({
 		set((state) => ({
 			...state,
 			items: createItem(state.items, state.newItem, state.sdk),
+			editId: state.newItem.id,
 		})),
 	editItem: (id: number | undefined) =>
 		set((state) => ({ ...state, editId: editItem(state.items, id) })),
@@ -101,6 +102,7 @@ export const useCtaListStore = create<TCtaListStore>((set, get) => ({
 		set((state) => ({
 			...state,
 			items: updateItem(state.items, id, label, url, state.sdk),
+			editId: undefined,
 		})),
 	deleteItem: (id: number) =>
 		set((state) => ({
