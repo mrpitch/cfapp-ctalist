@@ -26,6 +26,7 @@ export const SortableCtaList = () => {
 
 	useEffect(() => {
 		console.log("init", sdk.field.getValue().ctas);
+		// need to set sdk in store, to use sdk in store
 		setSDK(sdk);
 		setItems(sdk.field.getValue().ctas || []);
 	}, [sdk, sdk.field, setItems, setSDK]);
