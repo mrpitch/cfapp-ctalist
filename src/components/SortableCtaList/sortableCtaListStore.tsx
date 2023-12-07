@@ -6,7 +6,6 @@ export type TItem = {
 	id: number;
 	label: string;
 	url: string;
-	edit: boolean;
 };
 
 type State = {

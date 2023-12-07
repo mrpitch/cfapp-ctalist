@@ -32,7 +32,7 @@ export const CtaListItem = ({ item }: TSortableCardsProps) => {
 	});
 
 	//destructure props
-	const { id } = item;
+	const { id, label, url } = item;
 
 	const styles = {
 		card: css({
@@ -55,7 +55,7 @@ export const CtaListItem = ({ item }: TSortableCardsProps) => {
 		zIndex,
 	};
 
-	const disabled = !editId ? true : editId === item.id;
+	const disabled = !editId ? true : editId === id;
 
 	return (
 		<Card
@@ -89,7 +89,7 @@ export const CtaListItem = ({ item }: TSortableCardsProps) => {
 						>
 							Label
 						</Text>
-						{editId === item.id ? (
+						{editId === id ? (
 							<TextInput
 								name="label"
 								onKeyDown={function noRefCheck() {}}
@@ -101,7 +101,7 @@ export const CtaListItem = ({ item }: TSortableCardsProps) => {
 								value={inputState.label}
 							/>
 						) : (
-							<Text>{item.label}</Text>
+							<Text>{label}</Text>
 						)}
 					</Flex>
 					<Flex flexDirection="column" flexGrow={1}>
@@ -112,7 +112,7 @@ export const CtaListItem = ({ item }: TSortableCardsProps) => {
 						>
 							Url
 						</Text>
-						{editId === item.id ? (
+						{editId === id ? (
 							<TextInput
 								name="url"
 								onKeyDown={function noRefCheck() {}}
@@ -124,18 +124,18 @@ export const CtaListItem = ({ item }: TSortableCardsProps) => {
 								value={inputState.url}
 							/>
 						) : (
-							<Text>{item.url}</Text>
+							<Text>{url}</Text>
 						)}
 					</Flex>
 					<Flex flexDirection="column" flexGrow={0} alignSelf="center">
-						{editId === item.id ? (
+						{editId === id ? (
 							<>
 								<IconButton
 									variant="transparent"
 									aria-label="Update"
 									icon={<DoneIcon />}
 									onClick={() => {
-										updateItem(item.id, inputState.label, inputState.url);
+										updateItem(id, inputState.label, inputState.url);
 									}}
 									isDisabled={!disabled}
 								/>
@@ -146,7 +146,7 @@ export const CtaListItem = ({ item }: TSortableCardsProps) => {
 									variant="transparent"
 									aria-label="edit"
 									icon={<EditIcon />}
-									onClick={() => editItem(item.id)}
+									onClick={() => editItem(id)}
 									isDisabled={!disabled}
 								/>
 							</>
@@ -155,7 +155,7 @@ export const CtaListItem = ({ item }: TSortableCardsProps) => {
 							variant="transparent"
 							aria-label="Select the date"
 							icon={<DeleteIcon />}
-							onClick={() => deleteItem(item.id)}
+							onClick={() => deleteItem(id)}
 							isDisabled={!disabled}
 						/>
 					</Flex>
