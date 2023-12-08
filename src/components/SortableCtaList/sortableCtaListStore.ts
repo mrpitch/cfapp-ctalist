@@ -83,7 +83,7 @@ export const useCtaListStore = create<TCtaListStore>((set) => ({
 	sdk: {} as FieldAppSDK,
 	items: [],
 	newItem: {
-		id: new Date().getTime(),
+		id: 0,
 		label: "",
 		url: "",
 	},
@@ -115,5 +115,6 @@ export const useCtaListStore = create<TCtaListStore>((set) => ({
 		set((state) => ({
 			...state,
 			items: deleteItem(state.items, id, state.sdk),
+			editId: undefined,
 		})),
 }));

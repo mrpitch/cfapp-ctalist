@@ -32,9 +32,7 @@ interface IFormInput {
 
 export const CtaListItem = ({ item }: TSortableCardsProps) => {
 	// init sdk
-	const { updateItem, deleteItem, editId, editItem } = useCtaListStore(
-		(state) => state
-	);
+	const { updateItem, deleteItem, editId, editItem } = useCtaListStore();
 
 	//destructure props & init form
 	const { id, label, url } = item;
@@ -115,7 +113,6 @@ export const CtaListItem = ({ item }: TSortableCardsProps) => {
 												maxLength: { value: 45, message: "Max length is 45" },
 											})}
 										/>
-										<Text></Text>
 										{errors.label && (
 											<FormControl.ValidationMessage>
 												{errors.label.message}
