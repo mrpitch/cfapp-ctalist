@@ -1,33 +1,77 @@
-This project was bootstrapped with [Create Contentful App](https://github.com/contentful/create-contentful-app).
+# Contentful App - Sortable CTA List
 
-## How to use
+This [Contentful App](https://www.contentful.com/developers/docs/extensibility/app-framework/) adds a custom UI that represents a sortable list of ctas (label & urls)
 
-Execute create-contentful-app with npm, npx or yarn to bootstrap the example:
+Inspired by [this video](https://www.youtube.com/watch?v=OtmV3TPTbRs) and bootstrapped with [Create Contentful App](https://github.com/contentful/create-contentful-app).
 
-```bash
-# npx
-npx create-contentful-app --typescript
+## Functionality overview
 
-# npm
-npm init contentful-app -- --typescript
+- Can be used on JSON Object fields
+- Adds a sortable list-like UI
+- Produces data in the form of an array of JSON objects
+- Each object represents a tuple of
+  - a label (string)
+  - a url (string)
+- Items can be sorted via drag and drop
+- data Input is validated (label: max char 45, url: must start with https://)
+- The following things can be configured:
+  - number of max items
 
-# Yarn
-yarn create contentful-app --typescript
+## Example Data structure
+
+The data produced by the reference matrix field type looks something like this:
+
+```json
+[
+  {
+    "id": 1701962906057,
+    "label": "Click me",
+    "url": "https://#",
+    "edit": false
+  },
+  {
+    "id": 1702039169841,
+    "label": "Read more",
+    "url": "https://#",
+    "edit": true
+  },
+  {
+    "id": 1702047112520,
+    "label": "Buy now",
+    "url": "http://#"
+  }
+]
 ```
 
-## Available Scripts
+## Setup for Usage in Contentful
+
+(1) Build your app with `$ pnpm build` and host the files found in `./build/` somewhere statically.
+
+(2) In your Contentful account, create a new private app. Give it a name and enter the URL that points to the hosted version of your `./build/` directory.
+
+(3) Under "Location", check "Entry field" and "JSON Object"
+
+(4) Under "Instance Parameter Defintions":
+
+- `maxItems` (number)
+
+(5) Save the app and install it to the space(s) you like.
+
+(6) When you add or edit a JSON Object field in your content model, you should now see your app in the "Appearance" tab, along with fields for the instance parameters you configured. Fill them out as follows:
+
+## Development
 
 In the project directory, you can run:
 
-#### `npm start`
+#### `pnpm start`
 
-Creates or updates your app definition in Contentful, and runs the app in development mode.
+Creates or updates your app definition in contentful, and runs the app in development mode.
 Open your app to view it in the browser.
 
 The page will reload if you make edits.
 You will also see any lint errors in the console.
 
-#### `npm run build`
+#### `pnpm build`
 
 Builds the app for production to the `build` folder.
 It correctly bundles React in production mode and optimizes the build for the best performance.
@@ -35,46 +79,7 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.
 Your app is ready to be deployed!
 
-#### `npm run upload`
-
-Uploads the build folder to contentful and creates a bundle that is automatically activated.
-The command guides you through the deployment process and asks for all required arguments.
-Read [here](https://www.contentful.com/developers/docs/extensibility/app-framework/create-contentful-app/#deploy-with-contentful) for more information about the deployment process.
-
-#### `npm run upload-ci`
-
-Similar to `npm run upload` it will upload your app to contentful and activate it. The only difference is  
-that with this command all required arguments are read from the environment variables, for example when you add
-the upload command to your CI pipeline.
-
-For this command to work, the following environment variables must be set:
-
-- `CONTENTFUL_ORG_ID` - The ID of your organization
-- `CONTENTFUL_APP_DEF_ID` - The ID of the app to which to add the bundle
-- `CONTENTFUL_ACCESS_TOKEN` - A personal [access token](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/personal-access-tokens)
-
-## Libraries to use
-
-To make your app look and feel like Contentful use the following libraries:
-
-- [Forma 36](https://f36.contentful.com/) – Contentful's design system
-- [Contentful Field Editors](https://www.contentful.com/developers/docs/extensibility/field-editors/) – Contentful's field editor React components
-
-## Using the `contentful-management` SDK
-
-In the default create contentful app output, a contentful management client is
-passed into each location. This can be used to interact with Contentful's
-management API. For example
-
-```js
-// Use the client
-cma.locale.getMany({}).then((locales) => console.log(locales));
-```
-
-Visit the [`contentful-management` documentation](https://www.contentful.com/developers/docs/extensibility/app-framework/sdk/#using-the-contentful-management-library)
-to find out more.
-
-## Learn More
+## More about Contentful Apps
 
 [Read more](https://www.contentful.com/developers/docs/extensibility/app-framework/create-contentful-app/) and check out the video on how to use the CLI.
 
