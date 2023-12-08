@@ -68,7 +68,7 @@ export const SortableCtaList = () => {
 						variant="secondary"
 						aria-label="Add Item"
 						startIcon={<PlusIcon />}
-						onClick={() => createItem()}
+						onClick={() => createItem(new Date().getTime())}
 					>
 						Add
 					</Button>

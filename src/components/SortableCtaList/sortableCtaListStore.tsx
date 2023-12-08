@@ -18,7 +18,7 @@ type State = {
 type Actions = {
 	setSDK: (sdk: FieldAppSDK) => void;
 	setItems: (items: TItem[]) => void;
-	createItem: () => void;
+	createItem: (timestamp: number) => void;
 	editItem: (id: number | undefined) => void;
 	updateItem: (id: number, label: string, url: string) => void;
 	deleteItem: (id: number) => void;
@@ -27,8 +27,13 @@ type Actions = {
 type TCtaListStore = State & Actions;
 
 // business logic: create, edit, update, delete
-const createItem = (items: TItem[], item: TItem, sdk: FieldAppSDK) => {
-	const created = [...items, item];
+const createItem = (
+	items: TItem[],
+	item: TItem,
+	sdk: FieldAppSDK,
+	timestamp: number
+) => {
+	const created = [...items, { ...item, id: timestamp }];
 	if (created.length > sdk.parameters.instance.maxItems) {
 		sdk.notifier.error(
 			`Max number (${sdk.parameters.instance.maxItems}) of items reached`
@@ -69,7 +74,7 @@ const updateItem = (
 const deleteItem = (items: TItem[], id: number, sdk: FieldAppSDK) => {
 	const deleted = items.filter((item: TItem) => id !== item.id);
 	console.log("deleted: ", deleted);
-	sdk.field.setValue({ [sdk.field.id]: deleted });
+	sdk.field.setValue({ [sdk.parameters.instance.fieldName]: deleted });
 	return deleted;
 };
 
@@ -89,13 +94,13 @@ export const useCtaListStore = create<TCtaListStore>((set) => ({
 			...state,
 			items,
 		})),
-	createItem: () =>
+	createItem: (timestamp: number) =>
 		set((state) => ({
 			...state,
-			items: createItem(state.items, state.newItem, state.sdk),
+			items: createItem(state.items, state.newItem, state.sdk, timestamp),
 			editId:
 				state.items.length < state.sdk.parameters.instance.maxItems
-					? state.newItem.id
+					? timestamp
 					: undefined,
 		})),
 	editItem: (id: number | undefined) =>
