@@ -96,7 +96,7 @@ export const CtaListItem = ({ item }: TSortableCardsProps) => {
 					<Flex
 						flexDirection="row"
 						justifyContent="between"
-						alignItems="end"
+						alignItems="start"
 						gap="spacingS"
 					>
 						<Flex flexDirection="column" flexGrow={1}>
