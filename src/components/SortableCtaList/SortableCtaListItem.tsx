@@ -140,7 +140,7 @@ export const CtaListItem = ({ item }: TSortableCardsProps) => {
 											placeholder="Enter Url"
 											size="medium"
 											{...register("url", {
-												required: { value: true, message: "Label is required" },
+												required: { value: true, message: "Url is required" },
 												pattern: {
 													value: /^(http|https)?:\/\/(.*)/,
 													message: "Url need to start with http:// or https://",
