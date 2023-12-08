@@ -30,7 +30,7 @@ type TCtaListStore = State & Actions;
 const createItem = (items: TItem[], item: TItem, sdk: FieldAppSDK) => {
 	const created = [...items, item];
 	console.log("created: ", created);
-	sdk.field.setValue({ ctas: created });
+	//sdk.field.setValue({ ctas: created });
 	return created;
 };
 
@@ -39,7 +39,7 @@ const editItem = (items: TItem[], id: number | undefined) => {
 		return undefined;
 	}
 	const edited = items.filter((item: TItem) => id === item.id);
-	console.log("edited: ", edited);
+	console.log("edited: ", id, edited[0].id);
 	return edited[0].id;
 };
 

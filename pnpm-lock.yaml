@@ -11,6 +11,9 @@ dependencies:
   '@contentful/f36-components':
     specifier: 4.54.4
     version: 4.54.4(@types/react-dom@18.2.17)(@types/react@18.2.39)(react-dom@18.2.0)(react@18.2.0)
+  '@contentful/f36-forms':
+    specifier: ^4.56.0
+    version: 4.56.0(react-dom@18.2.0)(react@18.2.0)
   '@contentful/f36-icons':
     specifier: ^4.27.0
     version: 4.27.0(react-dom@18.2.0)(react@18.2.0)
@@ -41,6 +44,9 @@ dependencies:
   react-dom:
     specifier: 18.2.0
     version: 18.2.0(react@18.2.0)
+  react-hook-form:
+    specifier: ^7.48.2
+    version: 7.48.2(react@18.2.0)
   react-scripts:
     specifier: 5.0.1
     version: 5.0.1(@babel/plugin-syntax-flow@7.23.3)(@babel/plugin-transform-react-jsx@7.23.4)(eslint@8.55.0)(react@18.2.0)(typescript@4.9.5)
@@ -1625,7 +1631,7 @@ packages:
     dependencies:
       '@contentful/f36-button': 4.54.5(react-dom@18.2.0)(react@18.2.0)
       '@contentful/f36-core': 4.54.5(react-dom@18.2.0)(react@18.2.0)
-      '@contentful/f36-forms': 4.54.5(react-dom@18.2.0)(react@18.2.0)
+      '@contentful/f36-forms': 4.56.0(react-dom@18.2.0)(react@18.2.0)
       '@contentful/f36-icons': 4.27.0(react-dom@18.2.0)(react@18.2.0)
       '@contentful/f36-popover': 4.54.5(react-dom@18.2.0)(react@18.2.0)
       '@contentful/f36-skeleton': 4.54.5(react-dom@18.2.0)(react@18.2.0)
@@ -1731,7 +1737,7 @@ packages:
       '@contentful/f36-drag-handle': 4.54.5(react-dom@18.2.0)(react@18.2.0)
       '@contentful/f36-empty-state': 4.54.5(react-dom@18.2.0)(react@18.2.0)
       '@contentful/f36-entity-list': 4.54.5(react-dom@18.2.0)(react@18.2.0)
-      '@contentful/f36-forms': 4.54.5(react-dom@18.2.0)(react@18.2.0)
+      '@contentful/f36-forms': 4.56.0(react-dom@18.2.0)(react@18.2.0)
       '@contentful/f36-icon': 4.54.5(react-dom@18.2.0)(react@18.2.0)
       '@contentful/f36-icons': 4.27.0(react-dom@18.2.0)(react@18.2.0)
       '@contentful/f36-list': 4.54.5(react-dom@18.2.0)(react@18.2.0)
@@ -1789,6 +1795,21 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
+  /@contentful/f36-core@4.56.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-A3UtGTrB/Tyf9hMmdhp4rP0OX6XUI9hypg/57t6NlQsWlIGpWN3C7QJ0zoA53VEebnPepjChUcXkb/gbBzEOTA==}
+    peerDependencies:
+      react: '>=16.8'
+      react-dom: '>=16.8'
+    dependencies:
+      '@contentful/f36-tokens': 4.0.2
+      '@emotion/core': 10.3.1(react@18.2.0)
+      '@emotion/is-prop-valid': 1.2.1
+      csstype: 3.1.2
+      emotion: 10.0.27
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /@contentful/f36-datepicker@4.54.5(@types/react@18.2.39)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-wsUhGNAu2Q8X8GWeYcW30w3AhvUuuiCONtbeLIvq0yMI75IzK93UPygt5MUL9fX4KmfUYSqUlMIanLVQiY95kg==}
     peerDependencies:
@@ -1797,7 +1818,7 @@ packages:
     dependencies:
       '@contentful/f36-button': 4.54.5(react-dom@18.2.0)(react@18.2.0)
       '@contentful/f36-core': 4.54.5(react-dom@18.2.0)(react@18.2.0)
-      '@contentful/f36-forms': 4.54.5(react-dom@18.2.0)(react@18.2.0)
+      '@contentful/f36-forms': 4.56.0(react-dom@18.2.0)(react@18.2.0)
       '@contentful/f36-icons': 4.27.0(react-dom@18.2.0)(react@18.2.0)
       '@contentful/f36-popover': 4.54.5(react-dom@18.2.0)(react@18.2.0)
       '@contentful/f36-tokens': 4.0.2
@@ -1875,16 +1896,16 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@contentful/f36-forms@4.54.5(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-hfx/aQZAa2fFR1HJKdiEv6KaEUjZC+cVHSHbctbB0aWmw/I23RgzZFEcILCVzOcdkq4MtIAxtQTfDfUQSdPF5g==}
+  /@contentful/f36-forms@4.56.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-+MUuXMl0t2uCPwYfFbw8t/ujUGYNVQnlOyybNgQ2OUYU0MnLukLwAiS+Ty9I2L2iGOWYyQI9mDFgtCSs4+HUBw==}
     peerDependencies:
       react: '>=16.8'
       react-dom: '>=16.8'
     dependencies:
-      '@contentful/f36-core': 4.54.5(react-dom@18.2.0)(react@18.2.0)
+      '@contentful/f36-core': 4.56.0(react-dom@18.2.0)(react@18.2.0)
       '@contentful/f36-icons': 4.27.0(react-dom@18.2.0)(react@18.2.0)
       '@contentful/f36-tokens': 4.0.2
-      '@contentful/f36-typography': 4.54.5(react-dom@18.2.0)(react@18.2.0)
+      '@contentful/f36-typography': 4.56.0(react-dom@18.2.0)(react@18.2.0)
       emotion: 10.0.27
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -2027,7 +2048,7 @@ packages:
     dependencies:
       '@contentful/f36-button': 4.54.5(react-dom@18.2.0)(react@18.2.0)
       '@contentful/f36-core': 4.54.5(react-dom@18.2.0)(react@18.2.0)
-      '@contentful/f36-forms': 4.54.5(react-dom@18.2.0)(react@18.2.0)
+      '@contentful/f36-forms': 4.56.0(react-dom@18.2.0)(react@18.2.0)
       '@contentful/f36-icons': 4.27.0(react-dom@18.2.0)(react@18.2.0)
       '@contentful/f36-tokens': 4.0.2
       '@contentful/f36-typography': 4.54.5(react-dom@18.2.0)(react@18.2.0)
@@ -2169,6 +2190,19 @@ packages:
       react-dom: '>=16.8'
     dependencies:
       '@contentful/f36-core': 4.54.5(react-dom@18.2.0)(react@18.2.0)
+      '@contentful/f36-tokens': 4.0.2
+      emotion: 10.0.27
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@contentful/f36-typography@4.56.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-HcteNK7yx2rhAHUHLWoAsqcIdDgRVAxqeytu2zyc4U2aFwLWmSGgiDWifgFSNrWbmr8tx3L06JzH90KEEM9IWA==}
+    peerDependencies:
+      react: '>=16.8'
+      react-dom: '>=16.8'
+    dependencies:
+      '@contentful/f36-core': 4.56.0(react-dom@18.2.0)(react@18.2.0)
       '@contentful/f36-tokens': 4.0.2
       emotion: 10.0.27
       react: 18.2.0
@@ -10056,6 +10090,15 @@ packages:
       react-clientside-effect: 1.2.6(react@18.2.0)
       use-callback-ref: 1.3.0(@types/react@18.2.39)(react@18.2.0)
       use-sidecar: 1.1.2(@types/react@18.2.39)(react@18.2.0)
+    dev: false
+
+  /react-hook-form@7.48.2(react@18.2.0):
+    resolution: {integrity: sha512-H0T2InFQb1hX7qKtDIZmvpU1Xfn/bdahWBN1fH19gSe4bBEqTfmlr7H3XWTaVtiK4/tpPaI1F3355GPMZYge+A==}
+    engines: {node: '>=12.22.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /react-is@16.13.1:
