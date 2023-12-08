@@ -31,6 +31,7 @@ interface IFormInput {
 }
 
 export const CtaListItem = ({ item }: TSortableCardsProps) => {
+	// init sdk
 	const { updateItem, deleteItem, editId, editItem } = useCtaListStore(
 		(state) => state
 	);

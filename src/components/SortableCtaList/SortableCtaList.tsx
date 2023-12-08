@@ -23,13 +23,13 @@ export const SortableCtaList = () => {
 	);
 	// init sdk
 	const sdk = useSDK<FieldAppSDK>();
-
+	const fieldName = sdk.field.id;
 	useEffect(() => {
-		console.log("init", sdk.field.getValue().ctas);
+		console.log("init", sdk.field.getValue()[fieldName]);
 		// need to set sdk in store, to use sdk in store
 		setSDK(sdk);
-		setItems(sdk.field.getValue().ctas || []);
-	}, [sdk, sdk.field, setItems, setSDK]);
+		setItems(sdk.field.getValue()[fieldName] || []);
+	}, [sdk, sdk.field, setItems, setSDK, fieldName]);
 
 	// DnD handler
 	const handleDragEnd = (event: DragEndEvent) => {
@@ -50,7 +50,7 @@ export const SortableCtaList = () => {
 			const sorted = arrayMove(items, activeIndex, overIndex);
 			setItems(sorted);
 
-			sdk.field.setValue({ ctas: sorted });
+			sdk.field.setValue({ [fieldName]: sorted });
 		}
 	};
 
@@ -77,7 +77,7 @@ export const SortableCtaList = () => {
 			<DndContext onDragEnd={handleDragEnd}>
 				<SortableContext items={items} strategy={verticalListSortingStrategy}>
 					<Flex flexDirection="column" gap="spacingS">
-						{items.map((item) => {
+						{items.map((item, index) => {
 							return <CtaListItem key={item.id} item={item} />;
 						})}
 					</Flex>
