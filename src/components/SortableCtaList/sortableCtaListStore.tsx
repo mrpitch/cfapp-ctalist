@@ -27,10 +27,9 @@ type Actions = {
 type TCtaListStore = State & Actions;
 
 // business logic: create, edit, update, delete
-const createItem = (items: TItem[], item: TItem, sdk: FieldAppSDK) => {
+const createItem = (items: TItem[], item: TItem) => {
 	const created = [...items, item];
 	console.log("created: ", created);
-	//sdk.field.setValue({ ctas: created });
 	return created;
 };
 
@@ -88,7 +87,7 @@ export const useCtaListStore = create<TCtaListStore>((set) => ({
 	createItem: () =>
 		set((state) => ({
 			...state,
-			items: createItem(state.items, state.newItem, state.sdk),
+			items: createItem(state.items, state.newItem),
 			editId: state.newItem.id,
 		})),
 	editItem: (id: number | undefined) =>
