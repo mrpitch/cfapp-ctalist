@@ -17,10 +17,13 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_REGION }}
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
       - name: Install modules
-        run: npm ci
+        run: pnpm install
       - name: Build application
-        run: npm run build
+        run: pnpm build
       - name: Deploy to S3
         run: aws s3 sync ./build/ s3://${{ secrets.AWS_BUCKET_ID }}/apps/cta-list/
       - name: Create CloudFront invalidation
