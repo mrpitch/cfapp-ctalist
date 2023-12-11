@@ -70,7 +70,7 @@ export const SortableCtaList = () => {
 						startIcon={<PlusIcon />}
 						onClick={() => createItem(new Date().getTime())}
 					>
-						Add
+						Add cta
 					</Button>
 				</Flex>
 			</Box>
