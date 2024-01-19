@@ -24,11 +24,11 @@ export const SortableCtaList = () => {
 	// init sdk
 	const sdk = useSDK<FieldAppSDK>();
 	const fieldName = sdk.field.id;
+
 	useEffect(() => {
-		console.log("init", sdk.field.getValue()[fieldName]);
 		// need to set sdk in store, to use sdk in store
 		setSDK(sdk);
-		setItems(sdk.field.getValue()[fieldName] || []);
+		setItems(sdk.field.getValue() ? sdk.field.getValue()[fieldName] : []);
 	}, [sdk, sdk.field, setItems, setSDK, fieldName]);
 
 	// DnD handler
