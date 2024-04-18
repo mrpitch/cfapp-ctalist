@@ -1,6 +1,6 @@
 # Contentful App - Sortable CTA List
 
-This [Contentful App](https://www.contentful.com/developers/docs/extensibility/app-framework/) adds a custom UI that represents a sortable list of ctas (label & urls)
+This Contentful App adds a custom UI that represents a sortable list of ctas (label & urls)
 
 ![](./contentful-app_cctalist.avif)
 
